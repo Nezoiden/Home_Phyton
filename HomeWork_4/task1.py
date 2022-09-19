@@ -3,21 +3,23 @@
 # N = 20 -> [2,5]
 # N = 30 -> [2, 3, 5]
 
-n = int(input('Введите натуральное число: '))
+number = int(input('Введите натуральное число: '))
 
 
-def FindNumberMultiplier(n):
+def FindnumberMultiplier(number):
     multiplier = []
     a = 2
-    m = n 
-    while a * a <= n:
-                if n % a == 0:
-                    multiplier.append(a)
-                    n//=a
-                else:
-                    a += 1
-    multiplier.append(n) 
+    m = number
+    while number > 1:
+        if number % a == 0:
+            multiplier.append(a)
+            while number % a == 0:
+                number /= a
+        else:
+            a += 1
+   
 
-    print(f'N = {m} -> {multiplier}') 
+    print(f'N = {m} -> {multiplier}')
 
-FindNumberMultiplier(n)
+
+FindnumberMultiplier(number)
