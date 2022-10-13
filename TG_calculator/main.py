@@ -1,15 +1,19 @@
+import check
+import logger
 import logging
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
-from telegram.ext import (
-    ConversationHandler,
-)
+from telegram.ext import ConversationHandler
 
-import check
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-logger = logging.getLogger(__name__)
+# Решил не переносить наш калькулятор, а попробовать разобраться и доделать вариант
+# показанный Вами.
+
+
+
+
+logging.basicConfig(filename='logger.log',
+format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO )
+
 
 RAZIONAL = 'Рациональные'
 COMPLEX = 'Комплексные'
@@ -42,6 +46,7 @@ def get_float_number(update, context):
     num = update.message.text
     if not check.check_realnumber(update, num):
         return ENTER_FLOAT
+    
     update.message.reply_text(f'Вы ввели число {num}')
     which = 'num1' if 'num1' not in context.user_data else 'num2'
     context.user_data[which] = int(num)
@@ -73,17 +78,30 @@ def get_operation(update, context):
     num2 = context.user_data.get('num2')
     expression = f'{num1} {oper} {num2}'
     update.message.reply_text(f'{expression} = {eval(expression)}')
+    text_log = f"{num1} {oper} {num2} = "
+    result = eval(expression)
+    logger.log(text_log, result) 
     context.user_data.clear()
     return ConversationHandler.END
 
 
 def cancel(update, _):
     user = update.message.from_user
-    logger.info("Пользователь %s отменил разговор.", user.first_name)
+    text_log = "Пользователь %s отменил разговор."
+    logger.log(text_log, user) 
     update.message.reply_text(
-        'Мое дело предложить - Ваше отказаться'
-        ' Будет скучно - пиши.',
+        'До свидания!'
+        ,
         reply_markup=ReplyKeyboardRemove()
     )
 
     return ConversationHandler.END
+
+
+
+
+     
+
+
+
+   
